@@ -5,18 +5,21 @@ def will_surpass_best(target, optimization_history, min_delta, min_steps=5, dire
     if len(optimization_history) < min_steps:  # not enough data
         return True
 
-    # smooth the vector enough to properly analyze
     smooth_window = 1
     complete = False
     while not complete:
         temp = list(pd.Series(optimization_history).rolling(smooth_window).mean())
+        needs_further_smoothing = False
         for x in range(len(temp) - 2):
             if (temp[x] < temp[x + 1] and temp[x + 1] > temp[x + 2]) or \
                     (temp[x] > temp[x + 1] and temp[x + 1] < temp[x + 2]):
-                smooth_window += 1
-            else:
-                optimization_history = temp
-                complete = True
+                needs_further_smoothing = True
+
+        if needs_further_smoothing:
+            smooth_window += 1
+        else:
+            optimization_history = temp
+            complete = True
 
     curr_val = optimization_history[-1]
 
