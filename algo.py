@@ -9,6 +9,8 @@ def will_surpass_best(target, optimization_history, min_delta, min_steps=5, dire
     complete = False
     while not complete:
         temp = list(pd.Series(optimization_history).rolling(smooth_window).mean())
+        if len(temp) == 2:  # cannot be smoothed any further
+            break
         needs_further_smoothing = False
         for x in range(len(temp) - 2):
             if (temp[x] < temp[x + 1] and temp[x + 1] > temp[x + 2]) or \
