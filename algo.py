@@ -13,9 +13,14 @@ def will_surpass_best(target, optimization_history, min_delta, min_steps=5, dire
             optimization_history = temp
             break
         needs_further_smoothing = False
-        for x in range(len(temp) - 2):
-            if (temp[x] < temp[x + 1] and temp[x + 1] > temp[x + 2]) or \
-                    (temp[x] > temp[x + 1] and temp[x + 1] < temp[x + 2]):
+        
+        for x in range(len(temp) - 3):
+            roc_one = temp[x + 1] - temp[x]
+            roc_two = temp[x + 2] - temp[x + 1]
+            roc_three = temp[x + 3] - temp[x + 2]
+            
+            if (roc_one < roc_two and roc_two > roc_three) or \
+                    (roc_one > roc_two and roc_two < roc_three):
                 needs_further_smoothing = True
 
         if needs_further_smoothing:
