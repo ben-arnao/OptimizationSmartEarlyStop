@@ -36,7 +36,7 @@ def will_surpass_best(target, optimization_history, min_delta=1e-1, min_steps=5,
 
     x = [x for x in range(len(smoothed_history))]
     poly = np.polyfit(x, smoothed_history, deg=2)  # smoothed optimization curve needs 2nd degree
-    curr_x = x[-1] + 1
+    curr_x = x[-1]
     prev_y = None
     # now we step forward and simulate future optimization curve
     while True:
